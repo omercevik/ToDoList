@@ -1,0 +1,19 @@
+/*
+    To-Do List Django Project
+    05.12.2020
+    @version 1.0
+    @author Omer CEVIK
+*/
+
+Requirements & Notes :
+-----------------------------
+
+1. Project is developed in Ubuntu 20.04.1 LTS operating system.
+2. Python 3.8.5 version is used.
+3. SQLite Database is used.
+4. PyCharm IDE is used to develop.
+5. Bootstrap4 is used for front-end.
+6. Mozilla Firefox Browser is used for client.
+7. After downloading project you can run project using "python3 manage.py runserver" on console/Terminal.
+8. You can reach to web site on "http://127.0.0.1:8000/" address after running server.
+9. You can stop server using CTRL + C on terminal.
