@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <br>
+    <h1>Welcome to Your Page Dear {{ user.username }}!</h1>
+    <br>
+    <br>
+
+    <form class="form-inline my-2 my-lg-0" method="POST">
+        {% csrf_token %}
+
+        <input class="form-control mr-sm-2" type="text" placeholder="Add Item Name" name="itemName">
+        <input class="form-control mr-sm-2" type="text" placeholder="Add Description" name="description">
+        <input class="form-control mr-sm-2" type="date" placeholder="Set Deadline" name="deadline">
+        <input hidden name="status" value="0">
+        <input hidden name="listId" value="{{ list_id }}">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Add To List</button>
+    </form>
+    <br/>
+
+
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning alert-dismissable" role="alert">
+            <button class="close" data-dismiss="alert">
+                <small><sup>x</sup></small>
+            </button>
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if all_items %}
+        <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col"><a href="{% url 'order' list_id 'itemName' %}"><button name="itemName" type="button" class="btn btn-outline-warning">Item Name</button></a></th>
+                <th scope="col"><button name="description" type="button" disabled class="btn btn-outline-warning">Description</button></th>
+                <th scope="col"><a href="{% url 'order' list_id 'createdDate' %}"><button name="createdDate" type="button" class="btn btn-outline-warning">Created Date</button></a></th>
+                <th scope="col"><a href="{% url 'order' list_id 'deadline' %}"><button name="deadline" type="button" class="btn btn-outline-warning">Deadline</button></a></th>
+                <th scope="col"><a href="{% url 'order' list_id 'status' %}"><button name="status" type="button" class="btn btn-outline-warning">Status</button></a></th>
+                <th scope="col"></th>
+            </tr>
+          </thead>
+        <tbody>
+            {% for item in all_items %}
+                    {% if item.status == 2 %}
+                        <tr bgcolor="#808080">
+                            <th scope="row" class="striker">{{ item.itemName }}</th>
+                            <th scope="row" class="striker">{{ item.description }}</th>
+                            <th scope="row" class="striker">{{ item.createdDate.day }} / {{ item.createdDate.month }} / {{ item.createdDate.year }}</th>
+                            <th scope="row" class="striker">{{ item.deadline.day }} / {{ item.deadline.month }} / {{ item.deadline.year }}</th>
+                            <th scope="row"><button name="expired" type="button" disabled class="btn btn-dark">Expired</button></th>
+                            <th scope="row"><a href="{% url 'delete' item.id list_id %}"><button name="delete" type="button" class="btn btn-danger">Delete</button></a></th>
+                        </tr>
+                    {% elif item.status == 1 %}
+                        <tr bgcolor="#228b22">
+                            <th scope="row" class="striker">{{ item.itemName }}</th>
+                            <th scope="row" class="striker">{{ item.description }}</th>
+                            <th scope="row" class="striker">{{ item.createdDate.day }} / {{ item.createdDate.month }} / {{ item.createdDate.year }}</th>
+                            <th scope="row" class="striker">{{ item.deadline.day }} / {{ item.deadline.month }} / {{ item.deadline.year }}</th>
+                            <th scope="row"><a href="{% url 'uncross' item.id list_id%}"><button name="uncross" type="button" class="btn btn-success">Completed</button></a></th>
+                            <th scope="row"><a href="{% url 'delete' item.id list_id %}"><button name="delete" type="button" class="btn btn-danger">Delete</button></a></th>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <th scope="row">{{ item.itemName }}</th>
+                            <th scope="row">{{ item.description }}</th>
+                            <th scope="row" class="striker">{{ item.createdDate.day }} / {{ item.createdDate.month }} / {{ item.createdDate.year }}</th>
+                            <th scope="row">{{ item.deadline.day }} / {{ item.deadline.month }} / {{ item.deadline.year }}</th>
+                            <th scope="row"><a href="{% url 'cross_off' item.id list_id %}"><button name="cross_off" type="button" class="btn btn-outline-secondary">Not Completed</button></a></th>
+                            <th scope="row"><a href="{% url 'delete' item.id list_id%}"><button name="delete" type="button" class="btn btn-outline-danger">Delete</button></a></th>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}
+
